@@ -7,10 +7,11 @@ void setup() {
     pinMode(PIN_BUTTON_1, INPUT_PULLUP);
     pinMode(led, OUTPUT);
 
-    playerData.gear[0] = 5;
+    playerData.gear[0] = 1;
     playerData.gear[1] = 5;
     playerData.revLightsPercent = 0;
     playerData.rpm = 10000;
+    playerData.speed = 245;
     Renderer::init();
 }
 
@@ -31,6 +32,7 @@ void loop() {
     Renderer::drawGear();
     Renderer::drawSuggestedGear();
     Renderer::drawRPM();
+    Renderer::drawSpeed();
     Renderer::finalize();
 
     // Delay to make the changes visible

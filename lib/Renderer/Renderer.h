@@ -50,7 +50,7 @@ namespace Renderer {
      * @param color Color of the object, in HEX format 5-6-5 bit format
      * @since 1.0.0
      *******************************************************************/
-    void drawGear(uint8_t rp = RP_MIDDLECENTER, uint16_t x = 268, uint8_t y = 120, uint8_t size = 3, uint16_t color = TFT_WHITE);
+    void drawGear(uint8_t rp = RP_TOPCENTER, uint16_t x = 268, uint8_t y = 45, uint8_t size = 3, uint16_t color = TFT_WHITE);
 
     /*******************************************************************
      * @brief Draw the suggested gear
@@ -60,18 +60,41 @@ namespace Renderer {
      * @param size Size of the object
      * @since 1.0.0
      *******************************************************************/
-    void drawSuggestedGear(uint8_t rp = RP_TOPLEFT, uint16_t x = 350, uint8_t y = 120, uint8_t size = 1, uint16_t color = TFT_WHITE);
+    void drawSuggestedGear(uint8_t rp = RP_TOPCENTER, uint16_t x = 350, uint8_t y = 45, uint8_t size = 2, uint16_t color = TFT_WHITE);
 
     /*******************************************************************
-     * @brief Draw the current selected RPM
+     * @brief Draw a bar representing the rev lights
      * @param None Color, size and position are hardcoded to the top of the screen
      * @since 1.0.0
      *******************************************************************/
     void drawRevLights();
 
+    /*******************************************************************
+     * @brief Draw the current RPM value
+     * @param rp Reference point of the object
+     * @param x X position of the object
+     * @param y Y position of the object
+     * @param size Size of the object
+     * @param color Color of the object, in HEX format 5-6-5 bit format
+     * @since 1.0.0
+     *******************************************************************/
     void drawRPM(uint8_t rp = RP_BOTTOMRIGHT, uint16_t x = 536, uint8_t y = 50, uint8_t size = 1, uint16_t color = TFT_WHITE);
 
-    void drawSpeed();
+    /*******************************************************************
+     * @brief Draw the current speed value
+     * @param rp Reference point of the object
+     * @param x X position of the object
+     * @param y Y position of the object
+     * @param size Size of the object
+     * @param color Color of the object, in HEX format 5-6-5 bit format
+     * @since 1.0.0
+     *******************************************************************/
+    void drawSpeed(uint8_t rp = RP_BOTTOMCENTER, uint16_t x = 268, uint8_t y = 240, uint8_t size = 1, uint16_t color = TFT_WHITE);
+
+
+    void drawERSbar();
+
+    void drawThrottlebar();
 
     /*******************************************************************
      * @brief Finalize the renderer and push the sprite buffer to the AMOLED display

@@ -31,15 +31,34 @@ void Renderer::drawGear(uint8_t rp, uint16_t x, uint8_t y, uint8_t size, uint16_
     sprite.setTextColor(color); // Set the text color
     sprite.setTextSize(size); // Set the text size
     sprite.setTextDatum(rp); // Set the reference point of the text
-    sprite.drawString(String(playerData.gear[0]), x, y, 7); // Draw the text
+    if (playerData.gear[0] == 0)
+    {
+        sprite.unloadFont(); // Unload the font
+        sprite.setTextSize(8);
+        sprite.drawString("R", x, y + 40, 1); // Draw the text
+    } else if (playerData.gear[0] == 1)
+    {
+        sprite.drawString("-", x, y, 7); // Draw the text
+    } else
+    {
+         sprite.drawString(String(playerData.gear[0] - 1), x, y, 7); // Draw the text
+    }
+    sprite.unloadFont(); // Unload the font
 }
 
 void Renderer::drawSuggestedGear(uint8_t rp, uint16_t x, uint8_t y, uint8_t size, uint16_t color)
 {
+    String gear; // Declare the gear variable
+    if (playerData.gear[1] == 0)
+    {
+        gear = "-"; // No suggested gear
+    } else {
+        gear = String(playerData.gear[1]); // Set the gear to the suggested gear
+    }
     sprite.setTextColor(color); // Set the text color
     sprite.setTextSize(size); // Set the text size
     sprite.setTextDatum(rp); // Set the reference point of the text
-    sprite.drawString(String(playerData.gear[1]), x, y, 7); // Draw the text
+    sprite.drawString(gear, x, y, 7); // Draw the text
 }
 
 #define REVLIGHTS_HEIGHT 40 // Height of the rev lights area
@@ -50,13 +69,16 @@ void Renderer::drawRevLights() {
     uint16_t color;
 
     // Determine the color based on the revLights value
-    if (revLights >= 0 && revLights <= 24) {
+    if (revLights >= 0 && revLights <= 18) {
         // Full green (0, 255, 0)
-        color = TFT_RED;
-    } else if (revLights >= 25 && revLights <= 49) {
+        color = TFT_ORANGE;
+    } else if (revLights >= 19 && revLights <= 35) {
+        // Full yellow (255, 255, 0)
+        color = TFT_YELLOW;
+    } else if (revLights >= 36 && revLights <= 49) {
         // Full red (255, 0, 0)
         color = TFT_GREEN;
-    } else if (revLights >= 50 && revLights <= 84) {
+    } else if (revLights >= 50 && revLights <= 90) {
         // Full purple (128, 0, 128)
         color = TFT_PURPLE;
     } else {
@@ -78,6 +100,25 @@ void Renderer::drawRPM(uint8_t rp, uint16_t x, uint8_t y, uint8_t size, uint16_t
     sprite.drawString(String(playerData.rpm) + (String)" RPM", x, y); // Draw the text
     sprite.unloadFont(); // Unload the font
 }
+
+void Renderer::drawSpeed(uint8_t rp, uint16_t x, uint8_t y, uint8_t size, uint16_t color)
+{
+    if (playerData.gear[0] == 9 && playerData.revLightsPercent >= 90) {
+            sprite.setTextColor(TFT_RED); // Set the text color
+    } else {
+    sprite.setTextColor(color); // Set the text color
+    }
+    sprite.setTextSize(size); // Set the text size
+    sprite.setTextDatum(rp); // Set the reference point of the text
+    sprite.drawString(String(playerData.speed), x, y, 7); // Draw the text
+}
+
+void Renderer::drawERSbar()
+{
+
+}
+
+///---------------------------------------------------------------------------------------------------------------------
 
 void Renderer::finalize()
 {

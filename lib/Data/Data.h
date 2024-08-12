@@ -60,7 +60,7 @@ struct PlayerData
 {
   uint16_t speed = 0;              // Variable containing the speed of the vehicle in km/h.
   uint16_t rpm = 0;                // Variable containing the RPM of the vehicle.
-  uint8_t gear[2] = {1, 0};        // Variable containing the current gear and the suggested gear. First byte is the current gear, second byte is the suggested gear.
+  uint8_t gear[2] = {1, 0};        // Variable containing the current gear and the suggested gear. First byte is the current gear, second byte is the suggested gear. 0 = R, 1 = N, 2 = 1, 3 = 2, 4 = 3, 5 = 4, 6 = 5, 7 = 6, 8 = 7, 9 = 8.
   uint8_t ers[2] = {0, 0};         // Variable containing the ERS level and the ERS deployment mode. First byte is the ERS level (0-100), second byte is the ERS deployment mode. 0 = none, 1 = medium, 2 = hotlap, 3 = overtake.
   uint8_t revLightsPercent = 0;    // Variable containing the rev lights percentage (0-100) of the vehicle.
   uint8_t position = 20;           // Variable containing the current position of the vehicle.
@@ -69,6 +69,7 @@ struct PlayerData
   uint8_t drsState = 0;            // Variable containing the DRS state of the vehicle. 0 = DRS not available, 1 = DRS available, 2 = DRS enabled.
   uint8_t pitStatus = 0;           // Variable containing the pit status of the vehicle. 0 = none, 1 = pitting, 2 = in pit area.
   uint8_t fuelLevel = 0;           // Variable containing the amount of laps of fuel remaining.
+  uint8_t paddles[2] = {0, 0};     // Variable containing the state of the paddles. First byte is the amount of gas (0-100), second byte is the amount of brake (0-100).
 };
 
 // Not implemented yet
