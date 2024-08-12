@@ -91,7 +91,7 @@ static void lcd_send_cmd(uint32_t cmd, uint8_t *dat, uint32_t len)
     WriteComm(cmd);
     if (len != 0)
     {
-        for (int i = 0; i < len; i++)
+        for (int32_t i = 0; i < len; i++)
             WriteData(dat[i]);
     }
 #endif
@@ -142,14 +142,14 @@ void rm67162_init(void)
     pinMode(TFT_DC, OUTPUT);
 #endif
     // Initialize the screen multiple times to prevent initialization failure
-    int i = 3;
+    int32_t i = 3;
     while (i--) {
 #if LCD_USB_QSPI_DREVER == 1
         const lcd_cmd_t *lcd_init = rm67162_qspi_init;
-        for (int i = 0; i < sizeof(rm67162_qspi_init) / sizeof(lcd_cmd_t); i++)
+        for (int32_t i = 0; i < sizeof(rm67162_qspi_init) / sizeof(lcd_cmd_t); i++)
 #else
         const lcd_cmd_t *lcd_init = rm67162_spi_init;
-        for (int i = 0; i < sizeof(rm67162_spi_init) / sizeof(lcd_cmd_t); i++)
+        for (int32_t i = 0; i < sizeof(rm67162_spi_init) / sizeof(lcd_cmd_t); i++)
 #endif
         {
             lcd_send_cmd(lcd_init[i].cmd,

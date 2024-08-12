@@ -28,8 +28,8 @@
 
 /***********************config*************************/
 
-#define TFT_WIDTH             240
-#define TFT_HEIGHT            536
+#define TFT_WIDTH             536
+#define TFT_HEIGHT            240
 #define SEND_BUF_SIZE         (0x4000) //(LCD_WIDTH * LCD_HEIGHT + 8) / 10
 
 #define TFT_TE                9
@@ -54,3 +54,7 @@
 
 #define PIN_BUTTON_1          0
 #define PIN_BUTTON_2          21
+
+#define up 21
+#define down 0
+#define led 38

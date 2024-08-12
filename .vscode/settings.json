@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "cstdlib": "cpp",
+        "cstring": "cpp",
+        "*.donotinclude": "c",
+        "memory_resource": "cpp",
+        "tuple": "cpp"
+    }
+}
