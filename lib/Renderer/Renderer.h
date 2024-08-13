@@ -2,12 +2,17 @@
 #define RENDERER_H
 
 #include <config.h>
+#include <Arduino.h>
+#include <Esp.h>
+#include "esp_task_wdt.h"
 #include <TFT_eSPI.h>
 #include "rm67162.h"
 #include "Latin_Hiragana_24.h"
 #include "NotoSansMonoSCB20.h"
 #include "NotoSansBold36.h"
 #include "Final_Frontier_28.h"
+
+#include <Assets.h>
 
 #include <Data.h>
 
@@ -27,6 +32,8 @@
 #define RP_CENTREBASELINE 10 // Centre character baseline
 #define RP_RIGHTBASELINE 11 // Right character baseline
 
+#define DANGEROUS_RPM 90 // Percentage of redline to start flashing the RPM value
+
 // Declare TFT instances as extern
 extern TFT_eSPI tft;
 extern TFT_eSprite sprite;
@@ -42,6 +49,21 @@ namespace Renderer {
     void init();
 
     /*******************************************************************
+     * @brief Refresh the display: Draw all needed elements and push them to the sprite buffer
+     * @param None No parameters needed
+     * @since 1.0.0
+     *******************************************************************/
+    void refresh(void *pvParameters);
+
+        /*******************************************************************
+     * @brief Finalize the renderer and push the sprite buffer to the AMOLED display
+     * @param None No parameters needed
+     * @since 1.0.0
+     *******************************************************************/
+    void finalize();
+}
+namespace Draw {
+    /*******************************************************************
      * @brief Draw the current selected gear
      * @param rp Reference point of the object
      * @param x X position of the object
@@ -50,7 +72,7 @@ namespace Renderer {
      * @param color Color of the object, in HEX format 5-6-5 bit format
      * @since 1.0.0
      *******************************************************************/
-    void drawGear(uint8_t rp = RP_TOPCENTER, uint16_t x = 268, uint8_t y = 45, uint8_t size = 3, uint16_t color = TFT_WHITE);
+    void Gear(uint8_t rp = RP_TOPCENTER, uint16_t x = 268, uint8_t y = 45, uint8_t size = 3, uint16_t color = TFT_WHITE);
 
     /*******************************************************************
      * @brief Draw the suggested gear
@@ -58,16 +80,17 @@ namespace Renderer {
      * @param x X position of the object
      * @param y Y position of the object
      * @param size Size of the object
+     * @param color Color of the object, in HEX format 5-6-5 bit format
      * @since 1.0.0
      *******************************************************************/
-    void drawSuggestedGear(uint8_t rp = RP_TOPCENTER, uint16_t x = 350, uint8_t y = 45, uint8_t size = 2, uint16_t color = TFT_WHITE);
+    void SuggestedGear(uint8_t rp = RP_TOPCENTER, uint16_t x = 350, uint8_t y = 45, uint8_t size = 2, uint16_t color = TFT_WHITE);
 
     /*******************************************************************
      * @brief Draw a bar representing the rev lights
      * @param None Color, size and position are hardcoded to the top of the screen
      * @since 1.0.0
      *******************************************************************/
-    void drawRevLights();
+    void RevBar();
 
     /*******************************************************************
      * @brief Draw the current RPM value
@@ -78,7 +101,7 @@ namespace Renderer {
      * @param color Color of the object, in HEX format 5-6-5 bit format
      * @since 1.0.0
      *******************************************************************/
-    void drawRPM(uint8_t rp = RP_BOTTOMRIGHT, uint16_t x = 536, uint8_t y = 50, uint8_t size = 1, uint16_t color = TFT_WHITE);
+    void RPM(uint8_t rp = RP_BOTTOMRIGHT, uint16_t x = 536, uint8_t y = 50, uint8_t size = 1, uint16_t color = TFT_WHITE);
 
     /*******************************************************************
      * @brief Draw the current speed value
@@ -89,19 +112,39 @@ namespace Renderer {
      * @param color Color of the object, in HEX format 5-6-5 bit format
      * @since 1.0.0
      *******************************************************************/
-    void drawSpeed(uint8_t rp = RP_BOTTOMCENTER, uint16_t x = 268, uint8_t y = 240, uint8_t size = 1, uint16_t color = TFT_WHITE);
-
-
-    void drawERSbar();
-
-    void drawThrottlebar();
+    void Speed(uint8_t rp = RP_BOTTOMCENTER, uint16_t x = 268, uint8_t y = 240, uint8_t size = 1, uint16_t color = TFT_WHITE);
 
     /*******************************************************************
-     * @brief Finalize the renderer and push the sprite buffer to the AMOLED display
-     * @param None No parameters needed
+     * @brief Draw the ERS bar
+     * @param None Color, size and position are hardcoded on the right side of the screen
      * @since 1.0.0
      *******************************************************************/
-    void finalize();
+    void ERSbar();
+
+    /*******************************************************************
+     * @brief Draw the fuel bar
+     * @param None Color, size and position are hardcoded on the right side of the screen
+     * @since 1.0.0
+     *******************************************************************/
+    void FuelBar();
+
+    /*******************************************************************
+     * @brief Draw the throttle bar
+     * @param None Color, size and position are hardcoded on the right side of the screen
+     * @since 1.0.0
+     *******************************************************************/
+    void ThrottleBar();
+
+    /*******************************************************************
+     * @brief Draw the current lap data (lap time and lap number)
+     * @param rp Reference point of the object
+     * @param x X position of the object
+     * @param y Y position of the object
+     * @param size Size of the object
+     * @param color Color of the object, in HEX format 5-6-5 bit format
+     * @since 1.0.0
+     *******************************************************************/
+    void LapData(uint8_t rp = RP_BOTTOMRIGHT, uint16_t x = 536, uint8_t y = 238, uint8_t size = 1, uint16_t color = TFT_WHITE);
 }
     /*******************************************************************
      * @brief Helper function: Convert RGB color to HEX color

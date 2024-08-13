@@ -2,7 +2,6 @@
 #define CONFIG_H
 
 // Include libraries
-#include <Arduino.h>
 #include <Esp.h>
 #include <TFT_eSPI.h>
 
@@ -22,5 +21,7 @@
 // Own libraries
 #include "Data.h"
 #include "Renderer.h"
+#include "Decoder.h"
+#include "Hardware.h"
 
 #endif // CONFIG_H

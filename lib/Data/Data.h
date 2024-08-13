@@ -117,4 +117,6 @@ extern VehicleData vehicleData;
 extern CarSetup carSetup;
 extern SessionData sessionData;
 
+extern uint8_t currentMenu;
+
 #endif

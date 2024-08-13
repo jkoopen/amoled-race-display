@@ -1,40 +1,18 @@
 #include <config.h>
 
-// Create TFT instances
+TaskHandle_t refreshTask;
 
 void setup() {
-    pinMode(PIN_BUTTON_2, INPUT_PULLUP);
-    pinMode(PIN_BUTTON_1, INPUT_PULLUP);
-    pinMode(led, OUTPUT);
+  Serial.begin(115200); // Initialize serial communication for debugging
+  Hardware::init(); // Open and set the baud rate for the serial connection
+  Renderer::init(); // Initialize the display and the renderer
 
-    playerData.gear[0] = 1;
-    playerData.gear[1] = 5;
-    playerData.revLightsPercent = 0;
-    playerData.rpm = 10000;
-    playerData.speed = 245;
-    Renderer::init();
+  // Create a task to continuously refresh the display, framerate is capped to 60FPS.
+  xTaskCreatePinnedToCore(Renderer::refresh, "refresh", 10000, NULL, 1, &refreshTask, 0);
 }
 
 void loop() {
-    static int step = 2;
-    static int direction = 1;
-
-    // Update revLightsPercent
-    playerData.revLightsPercent += step * direction;
-
-    // Reverse direction if limits are reached
-    if (playerData.revLightsPercent >= 100 || playerData.revLightsPercent <= 0) {
-        direction *= -1;
-    }
-
-    // Draw the rev lights with the updated percentage
-    Renderer::drawRevLights();
-    Renderer::drawGear();
-    Renderer::drawSuggestedGear();
-    Renderer::drawRPM();
-    Renderer::drawSpeed();
-    Renderer::finalize();
-
-    // Delay to make the changes visible
-    delay(20);
+  Decoder::loop(); // Loop through the decoder, decoding and parsing any data present
+  Hardware::cycleBrightness(); // Cycle the brightness of the display when the button is pressed
+  delay(1); // Stability delay
 }

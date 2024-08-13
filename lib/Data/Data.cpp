@@ -7,3 +7,4 @@ PlayerData playerData; // GLOBAL VARIABLE: playerData
 VehicleData vehicleData; // GLOBAL VARIABLE: vehicleData
 CarSetup carSetup; // GLOBAL VARIABLE: carSetup 
 SessionData sessionData; // GLOBAL VARIABLE: sessionData
+uint8_t currentMenu = 0; // GLOBAL VARIABLE: currentMenu
