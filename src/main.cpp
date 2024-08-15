@@ -3,7 +3,6 @@
 TaskHandle_t refreshTask;
 
 void setup() {
-  Serial.begin(115200); // Initialize serial communication for debugging
   Hardware::init(); // Open and set the baud rate for the serial connection
   Renderer::init(); // Initialize the display and the renderer
 

@@ -4,26 +4,17 @@
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&tft);
 
-uint8_t brightness[7] = {100, 120, 140, 180, 200, 230, 254}; // Brightness of the AMOLED display
-
-void Renderer::init()
-{
-    sprite.createSprite(536, 240); // Create sprite with dimensions
-    sprite.setSwapBytes(true);
-
-    rm67162_init(); // Initialize AMOLED LCD
-    lcd_setRotation(1); // Set rotation to 90 degrees
-
-    lcd_brightness(brightness[6]); // Set initial brightness (index 6 is the last element)
-
-    // Check if the display is awake
-    uint8_t displayStatus = tft.readcommand8(0x0A); // Read display status
-
-    // If display status is 0, try to wake up the display
-    if (displayStatus == 0) {
-        lcd_display_on();
-        delay(500); // Increase delay to give more time for the display to wake up
+void Renderer::init() {
+    // Create sprite with dimensions
+    if (!sprite.createSprite(536, 240)) {
+        Serial.println("Failed to create sprite");
+        return;
     }
+    sprite.setSwapBytes(true);
+    rm67162_init(); // Initialize AMOLED LCD
+    lcd_display_on();
+    lcd_setRotation(1); // Set rotation to 90 degrees
+    lcd_brightness(255); // Set initial brightness (index 6 is the last element)
 }
 
 void Draw::Gear(uint8_t rp, uint16_t x, uint8_t y, uint8_t size, uint16_t color)
