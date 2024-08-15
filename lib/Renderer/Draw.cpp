@@ -4,19 +4,6 @@
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&tft);
 
-void Renderer::init() {
-    // Create sprite with dimensions
-    if (!sprite.createSprite(536, 240)) {
-        Serial.println("Failed to create sprite");
-        return;
-    }
-    sprite.setSwapBytes(true);
-    rm67162_init(); // Initialize AMOLED LCD
-    lcd_display_on();
-    lcd_setRotation(1); // Set rotation to 90 degrees
-    lcd_brightness(255); // Set initial brightness (index 6 is the last element)
-}
-
 void Draw::Gear(uint8_t rp, uint16_t x, uint8_t y, uint8_t size, uint16_t color)
 {
     sprite.setTextColor(color); // Set the text color
@@ -52,9 +39,6 @@ void Draw::SuggestedGear(uint8_t rp, uint16_t x, uint8_t y, uint8_t size, uint16
     sprite.drawString(gear, x, y, 7); // Draw the text
 }
 
-#define REVLIGHTS_HEIGHT 40 // Height of the rev lights area
-#define REVLIGHTS_HALF 10 // Half of the rev lights area
-
 void Draw::RevBar() {
     uint8_t revLights = playerData.revLightsPercent; // Set the rev lights value
     uint16_t color;
@@ -79,7 +63,7 @@ void Draw::RevBar() {
 
     uint16_t revLightsWidth = map(revLights, 0, 100, 0, 536); // Map the rev lights value to the width range
     sprite.fillRect(0, 0, revLightsWidth, REVLIGHTS_HEIGHT, color); // Draw the rev lights area with the mapped width
-    sprite.fillTriangle(0, REVLIGHTS_HEIGHT, 536, REVLIGHTS_HALF, 536, REVLIGHTS_HEIGHT, TFT_BLACK); // Draw the triangle to cover the remaining area
+    sprite.fillTriangle(0, REVLIGHTS_HEIGHT, 536, REVLIGHTS_END, 536, REVLIGHTS_HEIGHT, TFT_BLACK); // Draw the triangle to cover the remaining area
 }
 
 void Draw::RPM(uint8_t rp, uint16_t x, uint8_t y, uint8_t size, uint16_t color)

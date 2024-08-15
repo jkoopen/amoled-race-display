@@ -5,17 +5,18 @@
 #include <Arduino.h>
 #include <Esp.h>
 #include "esp_task_wdt.h"
+#include "esp_log.h"
 #include <TFT_eSPI.h>
 #include "rm67162.h"
 #include "Latin_Hiragana_24.h"
 #include "NotoSansMonoSCB20.h"
 #include "NotoSansBold36.h"
 #include "Final_Frontier_28.h"
-
 #include <Assets.h>
-
 #include <Data.h>
+#include <Hardware.h>
 
+// Reference points for text drawing
 #define RP_TOPLEFT 0 // Top left (default)
 #define RP_TOPCENTER 1 // Top centre
 #define RP_TOPRIGHT 2 // Top right
@@ -32,7 +33,12 @@
 #define RP_CENTREBASELINE 10 // Centre character baseline
 #define RP_RIGHTBASELINE 11 // Right character baseline
 
+// Personalization
 #define DANGEROUS_RPM 90 // Percentage of redline to start flashing the RPM value
+
+// Rev lights area dimensions
+#define REVLIGHTS_HEIGHT 40 // Height of the rev lights area
+#define REVLIGHTS_END 10 // Half of the rev lights area
 
 // Declare TFT instances as extern
 extern TFT_eSPI tft;

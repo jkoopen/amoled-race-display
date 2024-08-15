@@ -1,6 +1,16 @@
-#include <config.h>
+/*
+ * F1 2022 Telemetry Display
+ * Copyright (C) 2024 Just Koopen. All Rights Reserved.
+ * 
+ * AMOLED Racing Display on GitHub: https://github.com/jkoopen/amoled-race-display
+ * My GitHub: https://github.com/jkoopen
+ * 
+ * Built and designed for the LILYGO® T-Display-S3 AMOLED
+ * https://www.lilygo.cc/products/t-display-s3-amoled?variant=42837728526517
+ */
 
-TaskHandle_t refreshTask;
+#include <config.h> // Include the configuration file
+TaskHandle_t refreshTask; // Create a task handle for the refresh task
 
 void setup() {
   Hardware::init(); // Open and set the baud rate for the serial connection
@@ -12,6 +22,5 @@ void setup() {
 
 void loop() {
   Decoder::loop(); // Loop through the decoder, decoding and parsing any data present
-  Hardware::cycleBrightness(); // Cycle the brightness of the display when the button is pressed
   delay(1); // Stability delay
 }
