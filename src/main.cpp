@@ -13,6 +13,7 @@
 TaskHandle_t refreshTask; // Create a task handle for the refresh task
 
 void setup() {
+  delay(2000);
   Hardware::init(); // Open and set the baud rate for the serial connection
   Renderer::init(); // Initialize the display and the renderer
 

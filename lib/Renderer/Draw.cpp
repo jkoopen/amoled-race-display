@@ -143,6 +143,32 @@ void Draw::LapData(uint8_t rp, uint16_t x, uint8_t y, uint8_t size, uint16_t col
     sprite.unloadFont(); // Unload the font
 }
 
+void Draw::ERS(uint8_t rp, uint16_t x, uint8_t y, uint8_t size)
+{
+    sprite.setTextSize(size); // Set the text size
+    sprite.setTextDatum(rp); // Set the reference point of the text
+    sprite.loadFont(Latin_Hiragana_24); // Load the font
+    String ersTxt;
+    if (playerData.ers[1] == 0) {
+        ersTxt = "Off";
+        sprite.setTextColor(TFT_LIGHTGREY); // Set the text color
+    } else if (playerData.ers[1] == 1) {
+        ersTxt = "Med";
+        sprite.setTextColor(TFT_WHITE); // Set the text color
+    } else if (playerData.ers[1] == 2) {
+        ersTxt = "Hotl";
+        sprite.setTextColor(TFT_YELLOW); // Set the text color
+    } else if (playerData.ers[1] == 3) {
+        ersTxt = "Ovrt";
+        sprite.setTextColor(TFT_GREEN); // Set the text color
+    } else {
+        ersTxt = "Err";
+        sprite.setTextColor(TFT_RED); // Set the text color
+    }
+    sprite.drawString("ERS:", x, y); // Draw the text
+    sprite.drawString(ersTxt, x, y + 20); // Draw the text
+}
+
 ///---------------------------------------------------------------------------------------------------------------------
 
 uint16_t rgbToHex(uint8_t red, uint8_t green, uint8_t blue)

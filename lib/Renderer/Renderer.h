@@ -150,8 +150,13 @@ namespace Draw {
      * @param color Color of the object, in HEX format 5-6-5 bit format
      * @since 1.0.0
      *******************************************************************/
-    void LapData(uint8_t rp = RP_BOTTOMRIGHT, uint16_t x = 536, uint8_t y = 238, uint8_t size = 1, uint16_t color = TFT_WHITE);
-}
+    void LapData(uint8_t rp = RP_BOTTOMRIGHT, uint16_t x = 536, uint8_t y = 240, uint8_t size = 1, uint16_t color = TFT_WHITE);
+
+    void ERS(uint8_t rp = RP_TOPLEFT, uint16_t x = 300, uint8_t y = 180, uint8_t size = 1);
+
+    //void DRS(uint8_t rp = RP_TOPLEFT, uint16_t x = 0, uint8_t y = 0, uint8_t size = 1, uint16_t color = TFT_WHITE);
+
+} // namespace Draw
     /*******************************************************************
      * @brief Helper function: Convert RGB color to HEX color
      * @param red Red color component
