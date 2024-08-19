@@ -1,0 +1,43 @@
+#ifndef PACKETS_H
+#define PACKETS_H
+
+// Packet division: (STX - 1 Byte)(Packet Type - 1 Byte)(Data - x Byte)(LF - 1 Byte)
+
+// Player packet is a struct that contains all the data which has to be sent really fast and often to the ESP32
+struct PlayerPacket {
+    /*START CHARACTER (1 Byte)*///STX / 0x02
+    /*Packet Type (1 Byte)*/// 0x50 / P
+    /*Speed (2 Bytes)*/uint16_t speed;
+    /*RPM (2 Bytes)*/uint16_t rpm;
+    /*Gear (1 Byte)*/uint8_t gear;
+    /*GearSuggested (1 Byte)*/uint8_t gearSuggested;
+    /*ERS Level (1 Byte)*/uint8_t ersLevel;
+    /*ERS Mode (1 Byte)*/uint8_t ersMode;
+    /*Rev Lights % (1 Byte)*/uint8_t revLightsPrcnt;
+    /*Laptime: M (1 Byte)*/uint8_t lapTimeM;
+    /*Laptime: S (1 Byte)*/uint8_t lapTimeS;
+    /*Laptime: MS (2 Bytes)*/uint16_t lapTimeMS;
+    /*DRS Mode (1 Byte)*/uint8_t drsMode;
+    /*Fuel Level (1 Byte)*/uint8_t fuelLevel;
+    /*Throttle Level (1 Byte)*/uint8_t throttleLevel;
+    /*Brake Level (1 Byte)*/uint8_t brakeLevel;
+    /*NEWLINE CHARACTER (1 Byte)*///0x0A / LF
+
+    // Total size: 20 Bytes
+
+};
+
+// Session packet is a struct that contains all the data which has to be sent less often to the ESP32
+struct SessionPacket {
+    /*START CHARACTER (1 Byte)*///STX / 0x02
+    /*Packet Type (1 Byte)*/// 0x53 / S
+    /*Pit Ideal Lap (1 Byte)*/uint8_t pitIdealLap;
+    /*Safety Car Status (1 Byte)*/uint8_t safetyCarStatus;
+    /*Position (1 Byte)*/uint8_t position;
+    /*Lap Data (2 Bytes)*/uint16_t lapData;
+    /*Pit Status (1 Byte)*/uint8_t pitStatus;
+    /*NEWLINE CHARACTER (1 Byte)*///0x0A / LF
+};
+
+
+#endif

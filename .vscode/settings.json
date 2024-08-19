@@ -4,6 +4,8 @@
         "cstring": "cpp",
         "*.donotinclude": "c",
         "memory_resource": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "*.tcc": "cpp",
+        "algorithm": "cpp"
     }
 }

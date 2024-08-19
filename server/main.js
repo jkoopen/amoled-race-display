@@ -1,7 +1,7 @@
 const { F122UDP } = require("f1-22-udp");
 const { SerialPort } = require('serialport');
 
-const port = new SerialPort({ path: 'COM6', baudRate: 115200 });
+const port = new SerialPort({ path: 'COM1', baudRate: 921600 });
 
 const f122 = new F122UDP();
 f122.start();
@@ -12,6 +12,7 @@ let openMFD = undefined;
 let suggestedGear = undefined;
 let carStatusData = undefined;
 let lapData = undefined;
+let sessionData = undefined;
 
 function map(x, A, B, C, D) {
     return Math.round(C + ((x - A) * (D - C)) / (B - A));
@@ -27,11 +28,11 @@ f122.on('carTelemetry', async function (data) {
     if (data.m_mfdPanelIndex === 255) {
         openMFD = 0; // Ensure value is 1 digit, saving space
     } else {
-    openMFD = data.m_mfdPanelIndex + 1;
+    openMFD = 0//data.m_mfdPanelIndex + 1; TEMPORARY
     }
     suggestedGear = data.m_suggestedGear;
 
-    if (playerCarIndex !== undefined && TelemetryData !== undefined && openMFD !== undefined && suggestedGear !== undefined && carStatusData !== undefined && lapData !== undefined)
+    if (playerCarIndex !== undefined && TelemetryData !== undefined && openMFD !== undefined && suggestedGear !== undefined && carStatusData !== undefined && lapData !== undefined && sessionData !== undefined)
     {
     sendTelemetry();
     }
@@ -44,7 +45,7 @@ f122.on('lapData', async function (data) {
 f122.on('session', async function (data) {
     sessionData = data;
 
-    if (playerCarIndex !== undefined && TelemetryData !== undefined && openMFD !== undefined && suggestedGear !== undefined && carStatusData !== undefined && lapData !== undefined)
+    if (playerCarIndex !== undefined && TelemetryData !== undefined && openMFD !== undefined && suggestedGear !== undefined && carStatusData !== undefined && lapData !== undefined && sessionData !== undefined)
     {
     sendSessiondata();
     }
@@ -53,7 +54,7 @@ f122.on('session', async function (data) {
 f122.on('carStatus', async function (data) {
     carStatusData = data.m_carStatusData[playerCarIndex];
 
-    if (playerCarIndex !== undefined && TelemetryData !== undefined && openMFD !== undefined && suggestedGear !== undefined && carStatusData !== undefined && lapData !== undefined)
+    if (playerCarIndex !== undefined && TelemetryData !== undefined && openMFD !== undefined && suggestedGear !== undefined && carStatusData !== undefined && lapData !== undefined && sessionData !== undefined)
     {
     sendCarStatusData();
     }
@@ -91,8 +92,7 @@ async function sendTelemetry() {
         "M": minutes, // Represents minutes of current lap time
         "C": seconds, // Represents seconds of current lap time
         "X": milliseconds, // Represents milliseconds of current lap time
-        "W": drsStatus, // Represents DRS status (0 = Not allowed, 1 = Allowed, 2 = Activated)
-        "Y": Math.floor(carStatusData.m_fuelRemainingLaps) // Represents fuel level percentage (0-100)
+        "W": drsStatus // Represents DRS status (0 = Not allowed, 1 = Allowed, 2 = Activated)
     }
 
     const message = 'T' + JSON.stringify(data); // Ensure newline is part of the message
@@ -105,10 +105,11 @@ async function sendTelemetry() {
 async function sendSessiondata() {
     const data = {
         "I": sessionData.m_pitStopWindowIdealLap, // Represents ideal lap for pit stop window
+        "S": sessionData.m_pitSpeedLimit, // Represents pit speed limit in km/h
         "A": sessionData.m_safetyCarStatus, // Represents safety car status (0 = None, 1 = Full, 2 = Virtual)
         "V": lapData.m_carPosition, // Represents car position
         "D": lapData.m_currentLapNum, // Represents current lap number
-        "T": lapData.m_totalLaps, // Represents total laps
+        "T": sessionData.m_totalLaps, // Represents total laps
         "P": lapData.m_pitStatus, // Represents pit status (0 = None, 1 = Pitting, 2 = In pit area)
     }
 
@@ -122,6 +123,7 @@ async function sendSessiondata() {
 async function sendCarStatusData() {
     const data = {
         "F": carStatusData.m_fuelMix, // Represents fuel mix (0 = Lean, 1 = Standard, 2 = Rich)
+        "Y": Math.floor(carStatusData.m_fuelRemainingLaps * 10.0), // Represents fuel level percentage (0-100)
         "B": carStatusData.m_brakeBias, // Represents brake bias (0-100)
         "D": 50
     }

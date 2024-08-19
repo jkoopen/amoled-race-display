@@ -152,9 +152,11 @@ namespace Draw {
      *******************************************************************/
     void LapData(uint8_t rp = RP_BOTTOMRIGHT, uint16_t x = 536, uint8_t y = 240, uint8_t size = 1, uint16_t color = TFT_WHITE);
 
-    void ERS(uint8_t rp = RP_TOPLEFT, uint16_t x = 300, uint8_t y = 180, uint8_t size = 1);
+    void ERS(uint8_t rp = RP_TOPCENTER, uint16_t x = 350, uint8_t y = 134, uint8_t size = 1);
 
-    //void DRS(uint8_t rp = RP_TOPLEFT, uint16_t x = 0, uint8_t y = 0, uint8_t size = 1, uint16_t color = TFT_WHITE);
+    void DRS(uint8_t rp = RP_TOPCENTER, uint16_t x = 350, uint8_t y = 154, uint8_t size = 1);
+
+    void SafetyCar(uint8_t rp = RP_TOPCENTER, uint16_t x = 350, uint8_t y = 174, uint8_t size = 1);
 
 } // namespace Draw
     /*******************************************************************

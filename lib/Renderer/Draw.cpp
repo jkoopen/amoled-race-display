@@ -96,12 +96,30 @@ void Draw::ERSbar()
 {
     sprite.pushImage(502, 50, 32, 32, (uint16_t*)Assets::ERS); // Push the ERS bar image to the sprite buffer
     sprite.drawRect(502, 90, 32, 110, TFT_WHITE); // Draw the ERS bar outline
+
+    uint8_t rectFill = map(playerData.ers[0], 0, 100, 0, 105); // Map the ERS level to the height range
+    sprite.fillRect(504, 197 - rectFill, 28, rectFill, TFT_GREENYELLOW); // Draw the ERS bar with the mapped height
 }
 
 void Draw::FuelBar()
 {
     sprite.pushImage(450, 50, 32, 32, (uint16_t*)Assets::Fuel); // Push the fuel bar image to the sprite buffer
     sprite.drawRect(450, 90, 32, 110, TFT_WHITE); // Draw the fuel bar outline
+
+    // Assuming maxLaps is defined and holds the maximum number of laps
+    float fuelLvl = 0.0;
+    if (playerData.lapData[1] != 0) {
+        fuelLvl = (playerData.fuelLevel / playerData.lapData[1]) * 10.0; // Calculate fuel level as a percentage of max laps
+    }
+    
+    uint8_t rectFill = map(fuelLvl, 0, 100, 0, 105); // Map the fuel level to the height range
+    if (fuelLvl < 15) {
+        sprite.fillRect(452, 197 - rectFill, 28, rectFill, TFT_RED); // Draw the fuel bar with the mapped height
+    } else {
+        sprite.fillRect(452, 197 - rectFill, 28, rectFill, TFT_LIGHTGREY); // Draw the fuel bar with the mapped height
+    }
+
+
 }
 
 void Draw::ThrottleBar()
@@ -165,8 +183,58 @@ void Draw::ERS(uint8_t rp, uint16_t x, uint8_t y, uint8_t size)
         ersTxt = "Err";
         sprite.setTextColor(TFT_RED); // Set the text color
     }
-    sprite.drawString("ERS:", x, y); // Draw the text
-    sprite.drawString(ersTxt, x, y + 20); // Draw the text
+    sprite.drawString(ersTxt, x, y); // Draw the text
+    sprite.unloadFont(); // Unload the font
+}
+
+void Draw::DRS(uint8_t rp, uint16_t x, uint8_t y, uint8_t size)
+{
+    bool isVisible = (frameCtr / 10) % 2 == 0; // Blinking effect
+
+    sprite.setTextSize(size); // Set the text size
+    sprite.setTextDatum(rp); // Set the reference point of the text
+    sprite.loadFont(Latin_Hiragana_24); // Load the font
+    String drsTxt;
+    if (playerData.drsState == 0) {
+        drsTxt = "DRS";
+        sprite.setTextColor(TFT_LIGHTGREY); // Set the text color
+    } else if (playerData.drsState == 1) {
+        drsTxt = "-DRS-";
+        if (isVisible) sprite.setTextColor(TFT_YELLOW); // Set the text color
+        if (!isVisible) sprite.setTextColor(TFT_BLACK); // Set the text color
+    } else {
+        drsTxt = "DRS";
+        sprite.setTextColor(TFT_GREEN); // Set the text color
+    }
+    sprite.drawString(drsTxt, x, y); // Draw the text
+    sprite.unloadFont(); // Unload the font
+}
+
+void Draw::SafetyCar(uint8_t rp, uint16_t x, uint8_t y, uint8_t size)
+{
+    bool isVisible = (frameCtr / 10) % 2 == 0; // Blinking effect
+
+    sprite.setTextSize(size); // Set the text size
+    sprite.setTextDatum(rp); // Set the reference point of the text
+    sprite.loadFont(Latin_Hiragana_24); // Load the font
+    String scTxt;
+    if (sessionData.safetyCar == 0) {
+        scTxt = "NSC";
+        sprite.setTextColor(TFT_LIGHTGREY); // Set the text color
+    } else if (sessionData.safetyCar == 1) {
+        scTxt = "SC";
+        if (isVisible) sprite.setTextColor(TFT_YELLOW); // Set the text color
+        if (!isVisible) sprite.setTextColor(TFT_BLACK); // Set the text color
+    } else if (sessionData.safetyCar == 2) {
+        scTxt = "VSC";
+        if (isVisible) sprite.setTextColor(TFT_YELLOW); // Set the text color
+        if (!isVisible) sprite.setTextColor(TFT_BLACK); // Set the text color
+    } else {
+        scTxt = "Err";
+        sprite.setTextColor(TFT_RED); // Set the text color
+    }
+    sprite.drawString(scTxt, x, y); // Draw the text
+    sprite.unloadFont(); // Unload the font
 }
 
 ///---------------------------------------------------------------------------------------------------------------------

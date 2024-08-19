@@ -2,6 +2,7 @@
 
 void Renderer::refresh(void *pvParameters)
 {
+    frameCtr = 0; // Reset the frame counter
     esp_task_wdt_add(NULL); // Add the task to the watchdog timer
     while (true) // Loop forever
     {
@@ -20,6 +21,9 @@ void Renderer::refresh(void *pvParameters)
             Draw::ERSbar();
             Draw::FuelBar();
             Draw::ThrottleBar();
+            Draw::ERS();
+            Draw::DRS();
+            Draw::SafetyCar();
             Renderer::finalize();
             break;
 
@@ -47,6 +51,7 @@ void Renderer::refresh(void *pvParameters)
         default:
             break;
         }
+        frameCtr++; // Increment the frame counter
         // Ensure the refresh rate is 60Hz (16.66666ms per frame)
         vTaskPrioritySet(NULL, tskIDLE_PRIORITY); // Set the priority of the task to idle
         esp_task_wdt_reset(); // Reset the watchdog timer at the end of the loop

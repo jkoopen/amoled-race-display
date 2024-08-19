@@ -7,23 +7,17 @@
 
 namespace Decoder {
   /**
-   * The async loop for the decoder. This function must be ran on ``CORE 1``.
-   * @note This function will be ran in an infinite loop. Use xTaskCreatePinnedToCore to run this function on ``CORE 1``.
-   * @param params The parameters to pass to the function (not used)
+   * The loop function will be used to decode the incoming packets.
+   * @note This function should be called in the main loop.
+   * @param params None
    */
   void loop();
 
   /**
-   * Construct a packet from the raw data.
+   * Decode the raw data coming from the serial port.
    * @param rawData A pointer to the raw data
    */
-  void constructPacket(char *rawData);
-
-  /**
-   * Decode a packet.
-   * @param packet The packet to decode
-   */
-  void decodePacket(IncomingPacket packet);
+  void decodeRawData(char *rawData);
 
   /**
    * Data is sent per type. This function will decode the data for the telemetry of the car (speed RPM etc.).
@@ -32,19 +26,13 @@ namespace Decoder {
   void decodeTelemetry(String packetContents);
 
   /**
-   * Data is sent per type. This function will decode the data for the session data (position).
+   * Data is sent per type. This function will decode the data for the session data (position etc.).
    * @param packetContents The packet containing the session data
    */
   void decodeSessiondata(String packetContents);
 
   /**
-   * Data is sent per type. This function will decode the data for the lap data.
-   * @param packetContents The packet containing the event data
-   */
-  void decodeLapdata(String packetContents);
-
-  /**
-   * Data is sent per type. This function will decode the data for the car status.
+   * Data is sent per type. This function will decode the data for the car status (damage etc.).
    * @param packetContents The packet containing the event data
    */
   void decodeCarstatus(String packetContents);

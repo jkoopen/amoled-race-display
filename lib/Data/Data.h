@@ -37,22 +37,8 @@
 // Struct containing the incoming packet data
 struct IncomingPacket
 {
-  uint64_t timestamp;
   char type;
   String contents;
-};
-
-// Struct containing the error data
-struct Error
-{
-  /**
-   * List of error codes:
-   * 0: Recieved invalid packet
-   * 1: Invalid packet type
-   */ 
-  uint64_t timestamp;
-  uint8_t code = 255;
-  String errMessage;
 };
 
 // Struct containing the player data
@@ -111,12 +97,12 @@ struct SessionData
 };
 
 extern IncomingPacket incomingPacket;
-extern Error errorData;
 extern PlayerData playerData;
 extern VehicleData vehicleData;
 extern CarSetup carSetup;
 extern SessionData sessionData;
 
 extern uint8_t currentMenu;
+extern uint64_t frameCtr;
 
 #endif
