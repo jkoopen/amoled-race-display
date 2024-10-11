@@ -188,8 +188,8 @@ void lcd_setRotation(uint8_t r)
 void lcd_address_set(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
 {
     lcd_cmd_t t[3] = {
-        {0x2a, {x1 >> 8, x1, x2 >> 8, x2}, 0x04},
-        {0x2b, {y1 >> 8, y1, y2 >> 8, y2}, 0x04},
+        {0x2a, {static_cast<uint8_t>(x1 >> 8), static_cast<uint8_t>(x1), static_cast<uint8_t>(x2 >> 8), static_cast<uint8_t>(x2)}, 0x04},
+        {0x2b, {static_cast<uint8_t>(y1 >> 8), static_cast<uint8_t>(y1), static_cast<uint8_t>(y2 >> 8), static_cast<uint8_t>(y2)}, 0x04},
         {0x2c, {0x00}, 0x00},
     };
 
