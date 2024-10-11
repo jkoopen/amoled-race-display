@@ -9,16 +9,13 @@
  * https://www.lilygo.cc/products/t-display-s3-amoled?variant=42837728526517
  */
 
-#include "definitions.h" // Include the header file containing all the definitions/includes
+#include "definitions.hpp" // Include the header file containing all the definitions/includes
 TaskHandle_t refreshTask; // Create a task handle for the refresh task
 
 void setup() {
-  delay(100);
+  delay(1000);
   Hardware::init(921600); // Open and set the baud rate for the serial connection
   Renderer::init(); // Initialize the display and the renderer
-  delay(100);
-
-  
 
   // Create a task to continuously refresh the display, framerate is capped to 60FPS.
   xTaskCreatePinnedToCore(Renderer::refresh, "refresh", 10000, NULL, 1, &refreshTask, 0);

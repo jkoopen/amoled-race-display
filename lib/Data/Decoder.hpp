@@ -1,6 +1,6 @@
-#ifndef DECODER_H
-#define DECODER_H
-#include <Data.h>
+#ifndef DECODER_HPP
+#define DECODER_HPP
+#include <Data.hpp>
 #include <ArduinoJson.h>
 #include <cstdlib>
 #include <cstring>

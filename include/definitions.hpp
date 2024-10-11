@@ -1,5 +1,5 @@
-#ifndef DEFINITIONS_H
-#define DEFINITIONS_H
+#ifndef DEFINITIONS_HPP
+#define DEFINITIONS_HPP
 
 // Include libraries
 #include <Esp.h>
@@ -14,14 +14,14 @@
 
 // Fonts
 #include "rm67162.h"
-#include "Latin_Hiragana_24.h"
-#include "NotoSansMonoSCB20.h"
-#include "NotoSansBold36.h"
+#include "Latin_Hiragana_24.hpp"
+#include "NotoSansMonoSCB20.hpp"
+#include "NotoSansBold36.hpp"
 
 // Own libraries
-#include "Data.h"
-#include "Renderer.h"
-#include "Decoder.h"
-#include "Hardware.h"
+#include "Data.hpp"
+#include "Renderer.hpp"
+#include "Decoder.hpp"
+#include "Hardware.hpp"
 
 #endif // DEFINITIONS_H

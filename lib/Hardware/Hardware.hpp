@@ -1,11 +1,11 @@
-#ifndef HARDWARE_H
-#define HARDWARE_H
+#ifndef HARDWARE_HPP
+#define HARDWARE_HPP
 
 #include <config.h>
 #include <Esp.h>
-#include <Renderer.h>
-#include <Decoder.h>
-#include <Data.h>
+#include <Renderer.hpp>
+#include <Decoder.hpp>
+#include <Data.hpp>
 
 namespace Hardware {
     /**************************************************************************

@@ -17,8 +17,8 @@
         #include "NotoSansMonoSCB20.h"
 */
 
-#ifndef NOTOSANSMONOSCB20_H
-#define NOTOSANSMONOSCB20_H
+#ifndef NOTOSANSMONOSCB20_HPP
+#define NOTOSANSMONOSCB20_HPP
 
 const uint8_t NotoSansMonoSCB20[] PROGMEM = {
 0x00, 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x0B, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x00, 

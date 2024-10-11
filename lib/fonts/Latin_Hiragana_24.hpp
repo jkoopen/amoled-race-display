@@ -16,8 +16,8 @@
 
         #include "fontName.h"
 */
-#ifndef LATIN_HIRAGANA_24_H
-#define LATIN_HIRAGANA_24_H
+#ifndef LATIN_HIRAGANA_24_HPP
+#define LATIN_HIRAGANA_24_HPP
 
 const uint8_t Latin_Hiragana_24[] PROGMEM = {
 0x00, 0x00, 0x00, 0xC0, 0x00, 0x00, 0x00, 0x0B, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0x00, 

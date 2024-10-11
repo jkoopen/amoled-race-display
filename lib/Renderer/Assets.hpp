@@ -1,5 +1,5 @@
-#ifndef ASSETS_H
-#define ASSETS_H
+#ifndef ASSETS_HPP
+#define ASSETS_HPP
 
 // http://rinkydinkelectronics.com/t_imageconverter565.php
 

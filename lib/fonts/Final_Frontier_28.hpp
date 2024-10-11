@@ -17,8 +17,8 @@
         #include "fontName.h"
 */
 
-#ifndef FINAL_FRONTIER_28_H
-#define FINAL_FRONTIER_28_H
+#ifndef FINAL_FRONTIER_28_HPP
+#define FINAL_FRONTIER_28_HPP
 
 const uint8_t Final_Frontier_28[] PROGMEM = {
 0x00, 0x00, 0x00, 0x5A, 0x00, 0x00, 0x00, 0x0B, 0x00, 0x00, 0x00, 0x1C, 0x00, 0x00, 0x00, 0x00, 

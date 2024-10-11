@@ -1,5 +1,5 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#ifndef RENDERER_HPP
+#define RENDERER_HPP
 
 #include <config.h>
 #include <Arduino.h>
@@ -8,13 +8,13 @@
 #include "esp_log.h"
 #include <TFT_eSPI.h>
 #include "rm67162.h"
-#include "Latin_Hiragana_24.h"
-#include "NotoSansMonoSCB20.h"
-#include "NotoSansBold36.h"
-#include "Final_Frontier_28.h"
-#include <Assets.h>
-#include <Data.h>
-#include <Hardware.h>
+#include "Latin_Hiragana_24.hpp"
+#include "NotoSansMonoSCB20.hpp"
+#include "NotoSansBold36.hpp"
+#include "Final_Frontier_28.hpp"
+#include <Assets.hpp>
+#include <Data.hpp>
+#include <Hardware.hpp>
 
 // Reference points for text drawing
 #define RP_TOPLEFT 0 // Top left (default)
@@ -44,7 +44,6 @@
 extern TFT_eSPI tft;
 extern TFT_eSprite sprite;
 extern uint8_t brightness[7];
-
 
 namespace Renderer {
     /*******************************************************************

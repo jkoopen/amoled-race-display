@@ -1,4 +1,4 @@
-#include "Renderer.h"
+#include "Renderer.hpp"
 
 // Define TFT instances
 TFT_eSPI tft = TFT_eSPI();

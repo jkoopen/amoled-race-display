@@ -1,4 +1,4 @@
-#include "Hardware.h"
+#include "Hardware.hpp"
 
 uint8_t brightness[7] = {100, 120, 140, 180, 200, 230, 254};
 uint8_t setBrightness = 3; // The set brightness level

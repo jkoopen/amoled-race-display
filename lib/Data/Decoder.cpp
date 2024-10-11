@@ -1,4 +1,4 @@
-#include <Decoder.h>
+#include <Decoder.hpp>
 using namespace Decoder;
 
 void Decoder::loop()
