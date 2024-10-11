@@ -9,7 +9,7 @@
  * https://www.lilygo.cc/products/t-display-s3-amoled?variant=42837728526517
  */
 
-#include <config.h> // Include the configuration file
+#include "definitions.h" // Include the header file containing all the definitions/includes
 TaskHandle_t refreshTask; // Create a task handle for the refresh task
 
 void setup() {

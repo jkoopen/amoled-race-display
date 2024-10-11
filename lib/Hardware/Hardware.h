@@ -10,7 +10,7 @@
 namespace Hardware {
     /**************************************************************************
      * @brief Initialize and setup all other hardware related functions.
-     * @param None
+     * @param baud Baud rate for the serial connection
      *************************************************************************/
     void init(uint32_t baud = 115200);
 

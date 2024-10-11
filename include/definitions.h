@@ -1,5 +1,5 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef DEFINITIONS_H
+#define DEFINITIONS_H
 
 // Include libraries
 #include <Esp.h>
@@ -24,4 +24,4 @@
 #include "Decoder.h"
 #include "Hardware.h"
 
-#endif // CONFIG_H
+#endif // DEFINITIONS_H

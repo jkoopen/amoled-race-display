@@ -219,7 +219,7 @@ void Draw::SafetyCar(uint8_t rp, uint16_t x, uint8_t y, uint8_t size)
     sprite.loadFont(Latin_Hiragana_24); // Load the font
     String scTxt;
     if (sessionData.safetyCar == 0) {
-        scTxt = "NSC";
+        scTxt = "-";
         sprite.setTextColor(TFT_LIGHTGREY); // Set the text color
     } else if (sessionData.safetyCar == 1) {
         scTxt = "SC";
@@ -238,6 +238,7 @@ void Draw::SafetyCar(uint8_t rp, uint16_t x, uint8_t y, uint8_t size)
 }
 
 ///---------------------------------------------------------------------------------------------------------------------
+// Utility functions
 
 uint16_t rgbToHex(uint8_t red, uint8_t green, uint8_t blue)
 {
