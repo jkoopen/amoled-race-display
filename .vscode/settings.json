@@ -6,6 +6,7 @@
         "memory_resource": "cpp",
         "tuple": "cpp",
         "*.tcc": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "cstdint": "cpp"
     }
 }
