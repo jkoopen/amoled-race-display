@@ -3,7 +3,6 @@
 F1WiFiUDP::F1WiFiUDP()
 {
     UDPBufferMutex = xSemaphoreCreateMutex();
-    status = WL_IDLE_STATUS;
     nvs.begin();
 }
 
@@ -11,7 +10,7 @@ F1WiFiUDP::~F1WiFiUDP()
 {
     vSemaphoreDelete(UDPBufferMutex);
     nvs.close();
-    udpTaskRunning = false;
+    this->udpTaskRunning = false;
     if (udpTaskHandle != NULL)
     {
         vTaskDelete(udpTaskHandle);
@@ -20,7 +19,7 @@ F1WiFiUDP::~F1WiFiUDP()
 
 uint8_t F1WiFiUDP::connectWlan()
 {
-    if (status == WL_CONNECTED)
+    if (WiFi.status() == WL_CONNECTED)
     {
         return 0;
     }
@@ -43,17 +42,17 @@ uint8_t F1WiFiUDP::connectWlan()
         delay(100);
     }
 
-    status = WL_CONNECTED;
     return 0;
 }
 
 bool F1WiFiUDP::beginUDP(uint16_t port)
 {
-    if (status != WL_CONNECTED) return false;
+    if (WiFi.status() != WL_CONNECTED)
+        return false;
     bool ok = udp.begin(port);
     if (ok)
     {
-        udpTaskRunning = true;
+        this->udpTaskRunning = true;
         xTaskCreate((TaskFunction_t)udpTask, "udpTask", 4096, this, 1, &udpTaskHandle);
     }
     return true;
@@ -71,39 +70,79 @@ bool F1WiFiUDP::storeCredentials(String ssid, String password)
 
 void F1WiFiUDP::udpTask(F1WiFiUDP *classPtr)
 {
-    while (udpTaskRunning)
+    while (classPtr->udpTaskRunning)
     {
-        if (classPtr->status == WL_CONNECTED)
+        if (WiFi.status() != WL_CONNECTED)
         {
-            size_t packetSize = classPtr->udp.parsePacket();
-            if (packetSize)
-            {
-                xSemaphoreTake(classPtr->UDPBufferMutex, portMAX_DELAY);
+            vTaskDelay(1000 / portTICK_PERIOD_MS);
+            continue;
+        }
 
-                // Allocate dynamic buffer based on packet size
-                if (classPtr->UDPBuffer != nullptr)
-                {
-                    free(classPtr->UDPBuffer);
-                }
-                classPtr->UDPBuffer = (uint8_t *)malloc(packetSize + 1);
-                if (classPtr->UDPBuffer == nullptr)
-                {
-                    Serial.println("Failed to allocate memory for UDP buffer");
-                    xSemaphoreGive(classPtr->UDPBufferMutex);
-                    continue;
-                }
+        int packetSize = classPtr->udp.parsePacket();
+        if (packetSize)
+        {
+            xSemaphoreTake(classPtr->UDPBufferMutex, portMAX_DELAY);
 
-                // Read the packet into the buffer
-                classPtr->UDPBufferSize = classPtr->udp.read(classPtr->UDPBuffer, packetSize);
-                classPtr->UDPBuffer[classPtr->UDPBufferSize] = '\0'; // Null-terminate the string
-                classPtr->UDPBufferEmpty = false;
+            // Allocate dynamic buffer based on packet size
+            classPtr->UDPBuffer.resize(packetSize + 1);
 
-                // Flush the UDP buffer
-                classPtr->udp.flush();
-                xSemaphoreGive(classPtr->UDPBufferMutex);
-            }
+            // Read the packet into the buffer
+            classPtr->UDPBufferSize = classPtr->udp.read(classPtr->UDPBuffer.data(), packetSize);
+            classPtr->UDPBuffer[classPtr->UDPBufferSize] = '\0'; // Null-terminate the string
+            classPtr->UDPBufferEmpty = false;
+
+            xSemaphoreGive(classPtr->UDPBufferMutex);
         }
         vTaskDelay(5 / portTICK_PERIOD_MS);
     }
-    vTaskDelete(NULL);
+}
+
+void F1WiFiUDP::credentialsChecker(F1WiFiUDP *classPtr)
+{
+    if (Serial.available())
+    {
+        static char message[256]; // Create a buffer for the message
+        static uint8_t messagePosition = 0;      // Create a variable to store the message position
+
+        while (Serial.available() > 0)
+        {
+            char incomingByte = Serial.read(); // Grab the incoming byte
+
+            if (incomingByte != '\n' /* LINE FEED*/ && (messagePosition < 256 - 1))
+            {
+                message[messagePosition] = incomingByte; // Add the incoming byte to the message
+                messagePosition++;                       // Increment the message position
+            }
+            else
+            {
+                message[messagePosition] = '\0'; // Null-terminate the string (empty charset)
+                messagePosition = 0;             // Reset the message position
+
+                // Split the message into ssid and password
+                char *ssid = strtok(message, "|");
+
+                if (ssid != NULL)
+                {
+                    char *password = strtok(NULL, "|");
+                    if (password != NULL)
+                    {
+                        if (strcmp(ssid, DEBUG_REBOOT_KEY) == 0 && strcmp(password, DEBUG_REBOOT_KEY) == 0)
+                        {
+                            ESP.restart();
+                        }
+                        else if (strcmp(ssid, DEBUG_RESET_KEY) == 0 && strcmp(password, DEBUG_RESET_KEY) == 0)
+                        {
+                            classPtr->resetCredentials();
+                            Serial.println("Credentials reset!");
+                        }
+                        else
+                        {
+                            classPtr->storeCredentials(String(ssid), String(password));
+                            Serial.println("Credentials stored!");
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

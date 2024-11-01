@@ -13,3 +13,5 @@
 #include "F1WiFiUDP.hpp"	
 #include "F1Structs.hpp"
 #include "F1Parser.hpp"
+
+#define PROJECT_DEBUG

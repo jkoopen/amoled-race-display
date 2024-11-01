@@ -12,5 +12,5 @@ void setup()
 void loop()
 {
     delay(1000);
-    Serial.println("Hello World");
+    F1WiFiUDP::credentialsChecker(&wifiUDP); // Loop to check for credentials on the serial buffer
 }

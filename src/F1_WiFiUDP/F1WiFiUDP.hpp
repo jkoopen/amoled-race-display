@@ -3,6 +3,11 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <ArduinoNvs.h>
+#include <ArduinoJson.h>
+#include "main.hpp"
+
+#define DEBUG_RESET_KEY "r3s3t"
+#define DEBUG_REBOOT_KEY "r3b00t"
 
 class F1WiFiUDP
 {
@@ -18,14 +23,15 @@ public:
 
     static void udpTask(F1WiFiUDP *classPtr);
 
+    static void credentialsChecker(F1WiFiUDP *classPtr);
+
     SemaphoreHandle_t UDPBufferMutex;
-    uint8_t *UDPBuffer;
+    std::vector<uint8_t> UDPBuffer;
     size_t UDPBufferSize;
     bool UDPBufferEmpty;
 
-    wl_status_t status;
     TaskHandle_t udpTaskHandle;
-    static volatile bool udpTaskRunning;
+    volatile bool udpTaskRunning;
 private:
     WiFiUDP udp;
     ArduinoNvs nvs;

@@ -2,9 +2,24 @@
 #include "F1WiFiUDP.hpp"
 #include "F1Structs.hpp"
 
-struct parseTaskArgs {
-    F1WiFiUDP* udp;
-    F1Parser* parser;
+class F1Parser; // Forward declaration
+
+struct PacketData
+{
+    PacketMotionData motionData;
+    PacketSessionData sessionData;
+    PacketLapData lapData;
+    PacketEventData eventData;
+    PacketParticipantsData participantsData;
+    PacketCarSetupData carSetupData;
+    PacketCarTelemetryData telemetryData;
+    PacketCarStatusData statusData;
+};
+
+struct parseTaskArgs
+{
+    F1WiFiUDP *udp;
+    F1Parser *parser;
 };
 
 class F1Parser
@@ -17,18 +32,10 @@ public:
 
     static void parseTask(parseTaskArgs *args);
     TaskHandle_t parseTaskHandle;
-    static volatile bool parseTaskRunning;
+    volatile bool parseTaskRunning;
 
-    // Declare instances of all packet structures, for other classes to use
-    PacketMotionData motionData;
-    PacketSessionData sessionData;
-    PacketLapData lapData;
-    PacketEventData eventData;
-    PacketParticipantsData participantsData;
-    PacketCarSetupData carSetupData;
-    PacketCarTelemetryData telemetryData;
-    PacketCarStatusData statusData;
-
+    PacketData packetData; // Contains the most recent packet data
+    SemaphoreHandle_t packetMutex; // Mutex for packetData
 
 private:
     F1WiFiUDP *udp;

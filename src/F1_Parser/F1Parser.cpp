@@ -51,7 +51,7 @@ void F1Parser::parseTask(parseTaskArgs *args)
     F1WiFiUDP *udp = args->udp;
     F1Parser *parser = args->parser;
 
-    while (parseTaskRunning)
+    while (parser->parseTaskRunning)
     {
         // Lock the UDP buffer mutex
         if (xSemaphoreTake(udp->UDPBufferMutex, portMAX_DELAY) == pdTRUE)
@@ -59,7 +59,7 @@ void F1Parser::parseTask(parseTaskArgs *args)
             if (!udp->UDPBufferEmpty)
             {
                 // Parse the packet header
-                PacketHeader *header = (PacketHeader*)udp->UDPBuffer;
+                PacketHeader *header = reinterpret_cast<PacketHeader*>(udp->UDPBuffer.data());
 
                 // Convert header fields from Little Endian to host endianness
                 header->m_packetFormat = le16toh(header->m_packetFormat);
